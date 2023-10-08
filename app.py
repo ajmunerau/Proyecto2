@@ -2,6 +2,18 @@ import streamlit as st
 from gtts import gTTS
 from textblob import TextBlob
 
+# Cambiar el fondo y otros estilos
+st.markdown(
+    """
+    <style>
+    body {
+        background-color: #e6f7ff;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 def text_to_speech(text):
     temp_file = "temp_audio.mp3"
     tts = gTTS(text=text, lang='en')
@@ -10,15 +22,18 @@ def text_to_speech(text):
 
 def analyze_sentiment(text):
     analysis = TextBlob(text)
-    if analysis.sentiment.polarity > 0:
-        return "positive"
+    if analysis.sentiment.polarity > 0.5:
+        return "😃 Muy positivo"
+    elif analysis.sentiment.polarity > 0:
+        return "🙂 Positivo"
     elif analysis.sentiment.polarity == 0:
-        return "neutral"
+        return "😐 Neutral"
+    elif analysis.sentiment.polarity > -0.5:
+        return "🙁 Negativo"
     else:
-        return "negative"
+        return "☹️ Muy negativo"
 
 def main():
-    # Diseño y estilos
     st.markdown("<h1 style='text-align: center; color: blue;'>Asistente de Análisis de Sentimiento</h1>", unsafe_allow_html=True)
     
     st.markdown("## 🎤 Ingresa tu texto")
@@ -27,7 +42,7 @@ def main():
     if st.button("Analizar"):
         st.markdown("## 📊 Resultados")
         sentiment = analyze_sentiment(user_input)
-        st.write(f"El sentimiento del texto es: **{sentiment}**")
+        st.write(f"El sentimiento del texto es: {sentiment}")
         
         st.markdown("## 🎧 Reproducir texto")
         audio_file = text_to_speech(user_input)
