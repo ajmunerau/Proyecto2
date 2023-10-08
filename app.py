@@ -5,9 +5,13 @@ from io import BytesIO
 
 def analyze_sentiment(text):
     analysis = TextBlob(text)
-    if analysis.sentiment.polarity > 0:
+    if analysis.detect_language() != 'en':
+        # Traduce al inglés si el texto no está en inglés
+        analysis = analysis.translate(to='en')
+    
+    if analysis.sentiment.polarity > 0.1:
         return "Positivo"
-    elif analysis.sentiment.polarity < 0:
+    elif analysis.sentiment.polarity < -0.1:
         return "Negativo"
     else:
         return "Neutro"
@@ -27,8 +31,11 @@ def main():
         sentiment = analyze_sentiment(user_input)
         st.write(f"Sentimiento del texto: {sentiment}")
 
-        audio_data = text_to_speech(user_input)
-        st.audio(audio_data, format='audio/mp3')
+        if sentiment != "Neutro":
+            audio_data = text_to_speech(user_input)
+            st.audio(audio_data, format='audio/mp3')
+        else:
+            st.write("El texto es neutro, por lo tanto, no se generará audio.")
 
 if __name__ == "__main__":
     main()
