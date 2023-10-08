@@ -26,8 +26,7 @@ def main():
         sentiment = analyze_sentiment(user_input)
         st.write(f"Sentimiento del texto: {sentiment}")
 
-        comment = f"El sentimiento del texto es {sentiment}."
-        temp_audio_file = text_to_speech(comment)
+        temp_audio_file = text_to_speech(user_input)  # Ahora se convierte el texto del usuario a audio
         st.audio(temp_audio_file, format='audio/mp3')
 
         # Limpieza: eliminar el archivo temporal después de usarlo
