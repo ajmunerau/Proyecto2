@@ -22,7 +22,7 @@ def text_to_speech(text):
 def main():
     st.title("Análisis de Sentimiento y Conversión a Audio")
 
-    user_input = st.text_area("Escribe un texto para analizar:")
+    user_input = st.text_area("Escribe un texto para analizar:", key="text_area_key")
     if user_input:
         sentiment = analyze_sentiment(user_input)
         st.write(f"Sentimiento del texto: {sentiment}")
@@ -33,5 +33,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-if __name__ == "__main__":
-    main()
