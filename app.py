@@ -1,7 +1,7 @@
 import streamlit as st
 from textblob import TextBlob
 from gtts import gTTS
-from io import BytesIO
+import os
 
 def analyze_sentiment(text):
     analysis = TextBlob(text)
@@ -13,13 +13,10 @@ def analyze_sentiment(text):
         return "Neutro"
 
 def text_to_speech(text):
+    temp_file = "temp_audio.mp3"
     tts = gTTS(text=text, lang='es')
-    audio_data = BytesIO()
-    tts.save(audio_data)
-    audio_data.seek(0)
-    # Para verificar, también guardamos el audio en un archivo
-    tts.save("output.mp3")
-    return audio_data
+    tts.save(temp_file)
+    return temp_file
 
 def main():
     st.title("Análisis de Sentimiento y Conversión a Audio")
@@ -30,10 +27,14 @@ def main():
         st.write(f"Sentimiento del texto: {sentiment}")
 
         comment = f"El sentimiento del texto es {sentiment}."
-        audio_data = text_to_speech(comment)
-        st.audio(audio_data, format='audio/mp3')
+        temp_audio_file = text_to_speech(comment)
+        st.audio(temp_audio_file, format='audio/mp3')
+
+        # Limpieza: eliminar el archivo temporal después de usarlo
+        os.remove(temp_audio_file)
 
 if __name__ == "__main__":
     main()
+
 
 
