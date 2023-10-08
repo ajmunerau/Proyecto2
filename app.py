@@ -5,8 +5,6 @@ from io import BytesIO
 
 def analyze_sentiment(text):
     analysis = TextBlob(text)
-    
-    # Hacer el análisis más sensible ajustando el umbral
     if analysis.sentiment.polarity > 0.01:
         return "Positivo"
     elif analysis.sentiment.polarity < -0.01:
@@ -19,6 +17,8 @@ def text_to_speech(text):
     audio_data = BytesIO()
     tts.save(audio_data)
     audio_data.seek(0)
+    # Para verificar, también guardamos el audio en un archivo
+    tts.save("output.mp3")
     return audio_data
 
 def main():
@@ -29,10 +29,10 @@ def main():
         sentiment = analyze_sentiment(user_input)
         st.write(f"Sentimiento del texto: {sentiment}")
 
-        # Generar audio independientemente del resultado del análisis
         comment = f"El sentimiento del texto es {sentiment}."
         audio_data = text_to_speech(comment)
         st.audio(audio_data, format='audio/mp3')
 
 if __name__ == "__main__":
     main()
+
