@@ -5,9 +5,6 @@ from io import BytesIO
 
 def analyze_sentiment(text):
     analysis = TextBlob(text)
-    if analysis.detect_language() != 'en':
-        # Traduce al inglés si el texto no está en inglés
-        analysis = analysis.translate(to='en')
     
     if analysis.sentiment.polarity > 0.1:
         return "Positivo"
@@ -39,4 +36,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
