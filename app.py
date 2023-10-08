@@ -1,16 +1,6 @@
 import streamlit as st
-from textblob import TextBlob
 from gtts import gTTS
-import os
-
-def analyze_sentiment(text):
-    analysis = TextBlob(text)
-    if analysis.sentiment.polarity > 0.01:
-        return "Positivo"
-    elif analysis.sentiment.polarity < -0.01:
-        return "Negativo"
-    else:
-        return "Neutro"
+from textblob import TextBlob
 
 def text_to_speech(text):
     temp_file = "temp_audio.mp3"
@@ -18,22 +8,39 @@ def text_to_speech(text):
     tts.save(temp_file)
     return temp_file
 
+def analyze_sentiment(text):
+    analysis = TextBlob(text)
+    if analysis.sentiment.polarity > 0:
+        return "positive"
+    elif analysis.sentiment.polarity == 0:
+        return "neutral"
+    else:
+        return "negative"
+
 def main():
-    st.title("Análisis de Sentimiento y Conversión a Audio")
-
-    user_input = st.text_area("Escribe un texto para analizar: (en inglés)", key="text_area_key")
-    if user_input:
+    # Diseño y estilos
+    st.markdown("<h1 style='text-align: center; color: blue;'>Asistente de Análisis de Sentimiento</h1>", unsafe_allow_html=True)
+    
+    st.markdown("## 🎤 Ingresa tu texto")
+    user_input = st.text_area("")
+    
+    if st.button("Analizar"):
+        st.markdown("## 📊 Resultados")
         sentiment = analyze_sentiment(user_input)
-        st.write(f"Sentimiento del texto: {sentiment}")
+        st.write(f"El sentimiento del texto es: **{sentiment}**")
+        
+        st.markdown("## 🎧 Reproducir texto")
+        audio_file = text_to_speech(user_input)
+        audio_bytes = open(audio_file, 'rb').read()
+        st.audio(audio_bytes, format="audio/mp3")
 
-        temp_audio_file = text_to_speech(user_input)  # Ahora se convierte el texto del usuario a audio
-        st.audio(temp_audio_file, format='audio/mp3')
-
-        # Limpieza: eliminar el archivo temporal después de usarlo
-        os.remove(temp_audio_file)
+    st.write("---")
+    st.sidebar.title("Instrucciones:")
+    st.sidebar.markdown("1. Ingresa un texto en inglés.")
+    st.sidebar.markdown("2. Haz clic en 'Analizar' para determinar el sentimiento.")
+    st.sidebar.markdown("3. Escucha el audio con el texto ingresado.")
 
 if __name__ == "__main__":
     main()
-
 
 
