@@ -1,4 +1,4 @@
-streamlit
-pytesseract
-pyttsx3
-PILLOW
+import streamlit as st
+import requests
+import base64
+
