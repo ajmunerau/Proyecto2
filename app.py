@@ -14,14 +14,14 @@ def analyze_sentiment(text):
 
 def text_to_speech(text):
     temp_file = "temp_audio.mp3"
-    tts = gTTS(text=text, lang='es')
+    tts = gTTS(text=text, lang='en')
     tts.save(temp_file)
     return temp_file
 
 def main():
     st.title("Análisis de Sentimiento y Conversión a Audio")
 
-    user_input = st.text_area("Escribe un texto para analizar:", key="text_area_key")
+    user_input = st.text_area("Escribe un texto para analizar: (en inglés)", key="text_area_key")
     if user_input:
         sentiment = analyze_sentiment(user_input)
         st.write(f"Sentimiento del texto: {sentiment}")
