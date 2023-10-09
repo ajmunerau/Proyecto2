@@ -36,6 +36,9 @@ def analyze_sentiment(text):
 def main():
     st.markdown("<h1 style='text-align: center; color: blue;'>Asistente de Análisis de Sentimiento</h1>", unsafe_allow_html=True)
     
+    # Añadir la imagen
+    st.image("1.jpg") # Asegúrate de cambiar "nombre_de_tu_imagen.jpg" al nombre real de tu imagen.
+    
     st.markdown("## 🎤 Ingresa tu texto")
     user_input = st.text_area("")
     
@@ -57,4 +60,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
